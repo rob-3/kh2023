@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
-export default function desktopScreen() {
+export default function Home() {
   const router = useRouter();
   return (
     <>
