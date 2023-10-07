@@ -27,6 +27,11 @@ export default function Home() {
     { text: "Yay next.js", isPlayer: true },
   ]);
 
+  
+  function exitButton() {
+    window.location.href = '/desktopScreen';
+  }
+
   return (
     <>
       <Head>
@@ -50,7 +55,7 @@ export default function Home() {
             >
               <WindowHeader className={"flex justify-between"}>
                 <span>adventure.exe</span>
-                <Button>X</Button>
+                <Button onClick={exitButton}>X</Button>
               </WindowHeader>
               <WindowContent>
                 <div className="flex flex-col gap-9 p-8">
