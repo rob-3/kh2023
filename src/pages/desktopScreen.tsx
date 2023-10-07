@@ -18,13 +18,24 @@ import {
 import { motion } from "framer-motion";
 import { useState } from "react";
 
+
+
 interface Message {
   text: string;
   isPlayer: boolean;
 }
 
+
+
 export default function desktopScreen() {
   
+  const[iconClicked, setIconClicked] = useState(0);
+
+  const handleSwitch = (newValue:any) => {
+    // Update the state when the button is clicked
+    setIconClicked(newValue);
+  };
+
   
   
 
@@ -42,9 +53,10 @@ export default function desktopScreen() {
           className="flex h-full w-full flex-col p-6"
         >
 
+      {iconClicked === 0 && (
         <div className="mt-20">
            <Tooltip text='Customization' enterDelay={100} leaveDelay={200}>
-              <button>
+              <button onClick={() => handleSwitch(1)}>
                   <img className="m-2"
                   src="/ComputerIcon.png"
                   alt="Example Image"
@@ -55,7 +67,7 @@ export default function desktopScreen() {
          </Tooltip>
              
             <Tooltip text='Secret' enterDelay={100} leaveDelay={200}>
-              <button>
+            <button onClick={() => handleSwitch(2)}>
                   <img className="m-2"
                   src="/FolderIcon.png"
                   alt="Example Image"
@@ -64,15 +76,12 @@ export default function desktopScreen() {
                   />
               </button>
          </Tooltip>
-           
-            <div>
-           
-            </div>
+          
       
 
           <div className="absolute bottom-10 left-10  ...">
             <Tooltip text='Recycle‍' enterDelay={100} leaveDelay={200}>
-              <button >
+            <button onClick={() => handleSwitch(3)}>
                  <img className="m-2"
                   src="/RecycleIcon.png"
                   alt="Example Image"
@@ -84,6 +93,37 @@ export default function desktopScreen() {
          </div>
             
         </div>
+        )}
+
+        {iconClicked === 1 && (
+          <div className="m-20  "> 
+           <motion.div
+           initial={{ opacity: 0 }}
+           animate={{ opacity: 1 }}
+           className="flex h-full w-full flex-col p-6"
+         >
+          <Window className='window'>
+                  <WindowHeader active={false} className='window-title'>
+                    <span>not-active.exe</span>
+                    <Button>
+                      <span className='close-icon' />
+                    </Button>
+                  </WindowHeader>
+                  <WindowContent>I am not active</WindowContent>
+               </Window>
+            </motion.div>
+            </div>
+        )}
+
+        {iconClicked === 2 && (
+          <div className="m-30">1</div>
+        )}
+
+        {iconClicked === 3 && (
+          <div className="m-200">1</div>
+        )}
+
+
 
     <div className="absolute bottom-10 left-10  ...">
         <AppBar>
@@ -92,17 +132,11 @@ export default function desktopScreen() {
             <Button>
             Start
           </Button>
-       
-           
-        
         </div>
-
         <TextInput placeholder='Search...' width={150} />
       </Toolbar>
     </AppBar>
     </div>
-
-        
 
         </motion.div>
       </main>
