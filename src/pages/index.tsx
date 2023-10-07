@@ -14,6 +14,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="w-screen h-screen bg-[url('/windowsHeader16-9.png')]">
+        <div className="bg-[#140420] opacity-60 w-full h-full">
+        </div>
       </main>
     </>
   );
