@@ -28,18 +28,18 @@ export default function Home() {
       </Head>
       <main className="w-screen h-screen bg-[url('/windowsHeader16-9.png')]">
         <div className="bg-[#140420] opacity-60 w-full h-full pt-40 ">
-        <div className="flex flex-col gap-6 p-8">
-          {messages.map(({ isPlayer, text }, i) => (
-            <div
-              key={i}
-              className={`text-white ${isPlayer ? 'self-end' : ''}`}
-            >
-              <span className='border p-2 rounded'>
-              {text}
-              </span>
-            </div>
-          ))}
-        </div>
+          <div className="flex flex-col gap-9 p-8">
+            {messages.map(({ isPlayer, text }, i) => (
+              <div
+                key={i}
+                className={`text-white ${isPlayer ? 'self-end' : ''}`}
+              >
+                <span className='border p-4 rounded'>
+                  {text}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </main>
     </>
