@@ -17,6 +17,7 @@ import {
 } from "react95";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import router from "next/router";
 
 
 
@@ -102,15 +103,23 @@ export default function desktopScreen() {
            animate={{ opacity: 1 }}
            className="flex h-full w-full flex-col p-6"
          >
-          <Window className='window'>
-                  <WindowHeader active={false} className='window-title'>
-                    <span>not-active.exe</span>
-                    <Button>
-                      <span className='close-icon' />
-                    </Button>
-                  </WindowHeader>
-                  <WindowContent>I am not active</WindowContent>
-               </Window>
+          <Window
+            className={
+              "h-full w-full max-w-4xl !bg-zinc-900/70 backdrop-blur-md"
+            }
+          >
+            <WindowHeader className={"flex select-none justify-between"}>
+              <span>adventure.exe</span>
+              <Button onClick={() => void router.push("/")}>X</Button>
+            </WindowHeader>
+            <WindowContent
+              className={"flex h-full flex-col justify-end gap-4 !pb-8"}
+            >
+              
+
+             
+            </WindowContent>
+          </Window>
             </motion.div>
             </div>
         )}
