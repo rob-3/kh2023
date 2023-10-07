@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 
 import { api } from "~/utils/api";
 
@@ -15,6 +14,7 @@ export default function Home() {
       </Head>
       <main className="w-screen h-screen bg-[url('/windowsHeader16-9.png')]">
         <div className="bg-[#140420] opacity-60 w-full h-full">
+          <span className="text-white">{hello.data?.greeting}</span>
         </div>
       </main>
     </>
