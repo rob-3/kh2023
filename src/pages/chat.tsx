@@ -67,6 +67,11 @@ export default function Chat() {
                       className={`flex w-fit items-center px-2 py-1 text-white ring-2 ring-zinc-100 sm:px-4 sm:py-2`}
                     >
                       <span>{content}</span>
+                      {isLoading &&
+                        i === messages.length - 1 &&
+                        role !== "user" && (
+                          <span className={"animate-pulse"}>|</span>
+                        )}
                     </Frame>
                   </li>
                 ))}
