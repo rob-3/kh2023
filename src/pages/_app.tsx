@@ -18,7 +18,8 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <GlobalStyles />
       <ThemeProvider theme={tokyo}>
         <div className={"bg-[url('/windowsHeader16-9.png')]"}>
-          <div className={"bg-zinc-950/50"}>
+          {/* Usually you dont wanna do overflow hidden but this is hackathon */}
+          <div className={"overflow-y-hidden bg-zinc-950/50"}>
             <Component {...pageProps} />
           </div>
         </div>
