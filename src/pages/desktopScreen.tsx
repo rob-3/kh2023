@@ -4,6 +4,7 @@ import { api } from "~/utils/api";
 import {
   Button,
   Hourglass,
+  Tooltip,
   Window,
   WindowContent,
   WindowHeader,
@@ -35,31 +36,49 @@ export default function desktopScreen() {
           className="flex h-full w-full flex-col p-6"
         >
 
-        <div className="grid grid-cols-2 gap-4">
-            <div>
-                <img className="m-2"
-                src="/chelsea.jpg"
-                alt="Example Image"
-                width={100}  // Set the width of the image
-                height={100} // Set the height of the image
-                />
-            </div>
-            <div>2</div>
-            <div>
-                <img className="m-2"
-                src="/chelsea.jpg"
-                alt="Example Image"
-                width={100}  // Set the width of the image
-                height={100} // Set the height of the image
-                />
-            </div>
-            <div>4</div>
-            <div>5</div>
-            <div>6</div>
-            <div>7</div>
-            <div>8</div>
+        <div className="mt-10">
+           <Tooltip text='Customization' enterDelay={100} leaveDelay={200}>
+              <button>
+                  <img className="m-2"
+                  src="/ComputerIcon.png"
+                  alt="Example Image"
+                  width={100}  // Set the width of the image
+                  height={100} // Set the height of the image
+                  />
+              </button>
+         </Tooltip>
+             
+            <Tooltip text='Secret' enterDelay={100} leaveDelay={200}>
+              <button>
+                  <img className="m-2"
+                  src="/FolderIcon.png"
+                  alt="Example Image"
+                  width={100}  // Set the width of the image
+                  height={100} // Set the height of the image
+                  />
+              </button>
+         </Tooltip>
            
+            <div>
+           
+            </div>
+      
+
+          <div className="absolute bottom-10 left-10  ...">
+            <Tooltip text='Recycle‍' enterDelay={100} leaveDelay={200}>
+              <button >
+                 <img className="m-2"
+                  src="/RecycleIcon.png"
+                  alt="Example Image"
+                  width={100}  // Set the width of the image
+                  height={100} // Set the height of the image
+                  />
+                </button>
+            </Tooltip>
+         </div>
+            
         </div>
+
         
 
         </motion.div>
