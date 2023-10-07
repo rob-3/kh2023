@@ -2,8 +2,14 @@ import Head from "next/head";
 
 import { api } from "~/utils/api";
 import {
+  AppBar,
   Button,
   Hourglass,
+  MenuList,
+  MenuListItem,
+  Separator,
+  TextInput,
+  Toolbar,
   Tooltip,
   Window,
   WindowContent,
@@ -36,7 +42,7 @@ export default function desktopScreen() {
           className="flex h-full w-full flex-col p-6"
         >
 
-        <div className="mt-10">
+        <div className="mt-20">
            <Tooltip text='Customization' enterDelay={100} leaveDelay={200}>
               <button>
                   <img className="m-2"
@@ -79,10 +85,28 @@ export default function desktopScreen() {
             
         </div>
 
+    <div className="absolute bottom-10 left-10  ...">
+        <AppBar>
+      <Toolbar style={{ justifyContent: 'space-between' }}>
+        <div style={{  display: 'inline-block' }}>
+            <Button>
+            Start
+          </Button>
+       
+           
+        
+        </div>
+
+        <TextInput placeholder='Search...' width={150} />
+      </Toolbar>
+    </AppBar>
+    </div>
+
         
 
         </motion.div>
       </main>
     </>
+
   );
 }
