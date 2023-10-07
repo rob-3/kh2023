@@ -8,7 +8,7 @@ const openai = new OpenAI({
 
 export const runtime = 'edge';
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { prompt } = await req.body;
   const response = await openai.images.generate({
     prompt,

@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 export const runtime = 'edge';
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { messages } = await req.body;
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
