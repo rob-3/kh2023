@@ -19,6 +19,11 @@ export default function Home() {
     { text: "Yay next.js", isPlayer: true },
   ]);
 
+  
+  function exitButton() {
+    window.location.href = '/desktopScreen';
+  }
+
   return (
     <>
       <Head>
