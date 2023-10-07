@@ -5,7 +5,12 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 
 export default function Home() {
-  const router = useRouter();
+  const { data, isLoading } = api.example.hello.useQuery({ text: "from tRPC" });
+
+  const [messages, setMessage] = useState<Message[]>([
+    { text: "Choose your character", isPlayer: false },
+  ]);
+
   return (
     <>
       <Head>
@@ -16,58 +21,38 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex h-full w-full flex-col p-6"
+          className="flex h-full w-full flex-col items-center justify-center p-6"
         >
-          <div className="mt-20">
-            <Tooltip text="Customization" enterDelay={100} leaveDelay={200}>
-              <button onClick={() => undefined}>
-                <Image
-                  className="m-2"
-                  src="/ComputerIcon.png"
-                  alt="Example Image"
-                  width={100}
-                  height={100}
-                />
-              </button>
-            </Tooltip>
-
-            <Tooltip text="Secret" enterDelay={100} leaveDelay={200}>
-              <button onClick={() => void router.push("/chat")}>
-                <Image
-                  className="m-2"
-                  src="/FolderIcon.png"
-                  alt="Example Image"
-                  width={100}
-                  height={100}
-                />
-              </button>
-            </Tooltip>
-
-            <div className="absolute bottom-10  left-10">
-              <Tooltip text="Recycle‍" enterDelay={100} leaveDelay={200}>
-                <button onClick={() => undefined}>
-                  <Image
-                    className="m-2"
-                    src="/RecycleIcon.png"
-                    alt="Example Image"
-                    width={100}
-                    height={100}
-                  />
-                </button>
-              </Tooltip>
-            </div>
-          </div>
-
-          <div className="absolute bottom-10  left-10">
-            <AppBar>
-              <Toolbar style={{ justifyContent: "space-between" }}>
-                <div style={{ display: "inline-block" }}>
-                  <Button>Start</Button>
+          {isLoading ? (
+            <Hourglass size={48} />
+          ) : (
+            <Window
+              className={
+                "h-full w-full max-w-4xl !bg-zinc-900/70 backdrop-blur-md"
+              }
+            >
+              <WindowHeader className={"flex justify-between"}>
+                <span>adventure.exe</span>
+                <Button>X</Button>
+              </WindowHeader>
+              <WindowContent>
+                <div className="flex flex-col gap-9 p-8">
+                  {messages.map(({ isPlayer, text }, i) => (
+                    <div
+                      key={i}
+                      className={`text-white ${isPlayer ? "self-end" : ""}`}
+                    >
+                      <span className="p-4 ring-2 ring-zinc-100">{text}</span>
+                    </div>
+                  ))}
+                  
+                  <Button variant="default" className="w-1">
+                    <span className="text-black">next</span>
+                  </Button>
                 </div>
-                <TextInput placeholder="Search..." width={150} />
-              </Toolbar>
-            </AppBar>
-          </div>
+              </WindowContent>
+            </Window>
+          )}
         </motion.div>
       </main>
     </>
