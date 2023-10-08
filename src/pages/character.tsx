@@ -250,7 +250,7 @@ export default function Character() {
                     </Frame>
                   </GroupBox>
                 </div>
-                <Button variant="default" onClick={() => void handleCharacterSubmit}>
+                <Button variant="default" onClick={() => void handleCharacterSubmit()}>
                   Next
                 </Button>
               </WindowContent>
