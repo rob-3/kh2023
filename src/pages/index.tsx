@@ -6,10 +6,11 @@ import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
+
   return (
     <>
       <Head>
-        <title>Start your Adventure</title>
+        <title>Start your adventure</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="h-screen w-screen">
@@ -42,7 +43,17 @@ export default function Home() {
                 />
               </button>
             </Tooltip>
-
+            <Tooltip text="Top Secret" enterDelay={100} leaveDelay={200}>
+              <button onClick={() => void router.push("/character")}>
+                <Image
+                  className="m-2"
+                  src="/FolderIcon.png"
+                  alt="Example Image"
+                  width={100}
+                  height={100}
+                />
+              </button>
+            </Tooltip>
             <div className="absolute bottom-10  left-10">
               <Tooltip text="Recycle‍" enterDelay={100} leaveDelay={200}>
                 <button onClick={() => undefined}>
