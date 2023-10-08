@@ -14,6 +14,5 @@ export default async function handler(req: NextRequest, res: NextApiResponse) {
     n: 1,
     size: "1024x1024",
   });
-  res.status(200).json(response.data[0]!.url);
-  // return new Response(response.data[0]!.url);
+  return new Response(response.data[0]!.url);
 }
