@@ -19,10 +19,10 @@ const initialPrompt =
 
 const robInitialPrompt = 
   "Act as a GM in a fantasy role-playing game/RPG and respond to the user. You can use the following examples of JSON format to respond to the prompts: \n" +
-  '{ "text": "Searchin\' for treasure are ye?", "characterName": "Smith" }.\n' +
-  '{ "text": "", "characterName": "Jones" }.\n' +
-  '{ "text": "", "characterName": "Bill" }.\n' +
-  '{ "text": "I\'ll make you a trade: ", "characterName": "Thomas", "trade": {"gold": -20, "treasure map": 1} }.\n' +
+  '{ "text": "Searchin\' for treasure are ye?", "characterName": "Red Ruth" }.\n' +
+  '{ "text": "", "characterName": "One-Eyed Willy" }.\n' +
+  '{ "text": "", "characterName": "Jim the deckhand" }.\n' +
+  '{ "text": "I\'ll make you a trade: ", "characterName": "William the Trader", "trade": {"gold": -20, "treasure map": 1} }.\n' +
   "Always respond in this JSON schema { \"text\": \"<response>\", \"characterName\": \"\" }.\n" +
   "The characterName is always required and is the name of the speaking or acting non-player character (NPC)\n" +
   "The narrator will respond to the character's actions and will provide the character with information about the world.\n" +
