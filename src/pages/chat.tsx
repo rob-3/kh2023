@@ -17,7 +17,7 @@ import {
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useChat } from "ai/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { type Message } from "ai";
 import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 import useInventory from "~/hooks/useInventory";
@@ -136,9 +136,11 @@ export default function Chat() {
     }
   };
 
+  const interval = useRef<NodeJS.Timeout | null>(null);
+
   const {
     messages,
-    handleSubmit,
+    handleSubmit: _handleSubmit,
     handleInputChange,
     setMessages,
     input,
@@ -146,6 +148,10 @@ export default function Chat() {
   } = useChat({
     api: "/api/chat",
     onFinish: (message) => {
+      setTimeout(() => {
+        interval.current && clearInterval(interval.current);
+        interval.current = null;
+      }, 300);
       const { trade: newInventory, characterName } = parseMessage(
         message.content
       );
@@ -177,6 +183,18 @@ export default function Chat() {
       }
     },
   });
+
+  const ulRef = useRef<HTMLUListElement>(null);
+
+  const handleSubmit = (...args: Parameters<typeof _handleSubmit>) => {
+    interval.current = setInterval(() => {
+      ulRef.current?.scrollTo({
+        top: ulRef.current?.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 200);
+    _handleSubmit(...args);
+  };
 
   useEffect(() => {
     setLocalMessages(messages);
@@ -249,7 +267,7 @@ export default function Chat() {
             <WindowContent
               className={"flex h-full flex-col justify-end gap-4 !pb-20"}
             >
-              <ul className="flex flex-col gap-4 overflow-y-auto">
+              <ul ref={ulRef} className="flex flex-col gap-4 overflow-y-auto">
                 {messages.map(({ content, id, role }, i) => (
                   <li
                     key={id}
