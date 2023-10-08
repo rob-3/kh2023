@@ -317,7 +317,7 @@ export default function Chat() {
                 exit={{ right: "-100%" }}
                 transition={{ type: "tween", duration: 0.4 }}
                 className={
-                  "absolute right-0 top-0 z-50 h-full w-full max-w-sm pb-4 pt-4"
+                  "fixed right-0 top-0 z-50 h-full w-full max-w-sm pb-4 pt-4 overflow-hidden"
                 }
               >
                 <InventoryWindow onClose={() => setIsInventoryOpen(false)} />
