@@ -261,7 +261,7 @@ export default function Chat() {
     items: Record<string, number>;
   } | null>("adventure-character", null);
 
-  const characterImg = savedCharacter!.image;
+  const characterImg = savedCharacter?.image ?? "";
   onMount(() => {
     setMessages([
       {
