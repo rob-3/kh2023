@@ -31,6 +31,19 @@ type ParsedMessage = {
   trade?: Record<string, number>;
 };
 
+// TODO
+const INITIAL_PROMPT = "";
+
+const onMount = (fn: Function) => {
+  const hasMounted = useRef(false);
+  useEffect(() => {
+    if (!hasMounted.current) {
+      fn();
+      hasMounted.current = true;
+    }
+  });
+};
+
 const parseMessage = (content: string): ParsedMessage => {
   // If parsing fail return the message as is
   try {
@@ -249,6 +262,20 @@ export default function Chat() {
   } | null>("adventure-character", null);
 
   const characterImg = savedCharacter!.image;
+  onMount(() => {
+    setMessages([
+      {
+        id: crypto.randomUUID(),
+        role: "system",
+        content: savedCharacter!.story,
+      },
+      {
+        id: crypto.randomUUID(),
+        role: "system",
+        content: INITIAL_PROMPT,
+      },
+    ]);
+  });
 
   return (
     <>
@@ -364,7 +391,7 @@ export default function Chat() {
                     </Frame>
                   </li>
                 ))}
-                {messages.length === 0 && (
+                {messages.length < 3 && (
                   <div className={"flex justify-center"}>
                     <span>Say something!</span>
                   </div>
