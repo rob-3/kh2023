@@ -111,7 +111,7 @@ export default function Chat() {
   const [inventory, setInventory] = useInventory();
   const [localMessages, setLocalMessages] = useLocalStorage<Message[]>(
     "adventure-messages",
-    []
+    [],
   );
   const [localCharacterPics, setLocalCharacterPics] = useLocalStorage<
     Record<string, string>
@@ -171,7 +171,7 @@ export default function Chat() {
         interval.current = null;
       }, 300);
       const { trade: newInventory, characterName } = parseMessage(
-        message.content
+        message.content,
       );
       if (characterName && !localCharacterPics[characterName]) {
         void fetch("/api/dalle", {
@@ -271,7 +271,7 @@ export default function Chat() {
     <>
       <Head>
         <title>Adventure</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favLegendsoftheSkywardPirates.jpp" />
       </Head>
       <main className="h-screen w-screen">
         <motion.div
