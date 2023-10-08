@@ -102,7 +102,7 @@ export default function Chat() {
               [name]: imageURL as string,
             };
           });
-        });
+        }).catch(console.error);
     }
   };
 
