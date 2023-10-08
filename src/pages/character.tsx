@@ -20,6 +20,29 @@ export default function Character() {
   const { data, isLoading } = api.example.hello.useQuery({ text: "from tRPC" });
   const [selected, setSelected] = useState(0);
 
+  const character = {
+    [1]: {
+      name: "Lirael Stormblade",
+      story:
+        "Lirael Stormblade, born in Stormhaven, embraced piracy, seeking adventure and treasure on the high seas. Her legend grew as a fearless, cunning pirate captain.",
+      image: "/Lirael.jpg",
+    },
+    [2]: {
+      name: "Liracker",
+      story:
+        ' A 25-year-old deckhand, endured relentless bullying aboard the "Scarlet Serpent," seeking escape through friendship, a hidden treasure map, and a loyal parrot companion.',
+      image: "/Leinecker.png",
+    },
+    [3]: {
+      name: "Morgan",
+      story:
+        "Once a poor sailor for the navy is killed by pirates but is now undead, seeking revenge on the pirates that killed him. Morgan and his mates are now cursed to sail the seas forever for treasure and revenge.",
+      image: "/Morgan.jpg",
+    },
+  };
+  const handleCharacterSubmit = () => {
+    selected;
+  };
   return (
     <>
       <Head>
@@ -83,13 +106,13 @@ export default function Character() {
                     </Frame>
                   </GroupBox>
                   <GroupBox
-                    label="Captain Liracker"
+                    label="Captain Leinecker"
                     className="w-full sm:h-[30rem]"
                   >
                     <Frame className="h-full w-full p-2">
                       <div className="w-25 flex h-full flex-col items-center justify-center">
                         <Image
-                          src="/Liracker.jpg"
+                          src="/Leinecker.png"
                           width={200}
                           height={200}
                           alt="character"
@@ -103,7 +126,7 @@ export default function Character() {
                         <Button
                           className="mt-auto"
                           onClick={() => {
-                            setSelected(1);
+                            setSelected(2);
                           }}
                         >
                           <span className="text-black">select</span>
@@ -132,7 +155,7 @@ export default function Character() {
                         <Button
                           className="mt-auto"
                           onClick={() => {
-                            setSelected(1);
+                            setSelected(3);
                           }}
                         >
                           <span className="text-black">select</span>
@@ -141,7 +164,11 @@ export default function Character() {
                     </Frame>
                   </GroupBox>
                 </div>
-                <Button variant="default" className="w-1">
+                <Button
+                  variant="default"
+                  className="w-1"
+                  onClick={handleCharacterSubmit}
+                >
                   <span className="text-black">next</span>
                 </Button>
               </WindowContent>
