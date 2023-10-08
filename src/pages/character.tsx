@@ -186,7 +186,7 @@ export default function Character() {
                         />
                         <p className="p-2 text-center">
                           A 31-year-old deckhand, endured relentless bullying
-                          aboard the "Scarlet Serpent," seeking escape through
+                          aboard the &quot;Scarlet Serpent,&quot; seeking escape through
                           friendship, a hidden treasure map, will he find the
                           one piece?
                         </p>
@@ -250,7 +250,7 @@ export default function Character() {
                     </Frame>
                   </GroupBox>
                 </div>
-                <Button variant="default" onClick={handleCharacterSubmit}>
+                <Button variant="default" onClick={() => void handleCharacterSubmit}>
                   Next
                 </Button>
               </WindowContent>
