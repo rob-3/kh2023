@@ -26,18 +26,32 @@ export default function Character() {
       story:
         "Lirael Stormblade, born in Stormhaven, embraced piracy, seeking adventure and treasure on the high seas. Her legend grew as a fearless, cunning pirate captain.",
       image: "/Lirael.jpg",
+      items: {
+        gold: 18,
+        pistol: 2,
+      },
     },
     [2]: {
       name: "Liracker",
       story:
         ' A 25-year-old deckhand, endured relentless bullying aboard the "Scarlet Serpent," seeking escape through friendship, a hidden treasure map, and a loyal parrot companion.',
       image: "/Leinecker.png",
+      items: {
+        gold: 25,
+        pistol: 1,
+        parrot: 1,
+      },
     },
     [3]: {
       name: "Morgan",
       story:
         "Once a poor sailor for the navy is killed by pirates but is now undead, seeking revenge on the pirates that killed him. Morgan and his mates are now cursed to sail the seas forever for treasure and revenge.",
       image: "/Morgan.jpg",
+      items: {
+        gold: 15,
+        pistol: 1,
+        cutlass: 1,
+      },
     },
   };
   const handleCharacterSubmit = () => {
@@ -94,6 +108,7 @@ export default function Character() {
                           seas. Her legend grew as a fearless, cunning pirate
                           captain.
                         </p>
+                        <p>Starting Items: 18 gold, 2 pistols</p>
                         <Button
                           className="mt-auto"
                           onClick={() => {
@@ -123,6 +138,7 @@ export default function Character() {
                           friendship, a hidden treasure map, and a loyal parrot
                           companion.
                         </p>
+                        <p>Starting Items: 25 gold, 1 pistol, 1 parrot</p>
                         <Button
                           className="mt-auto"
                           onClick={() => {
@@ -152,6 +168,7 @@ export default function Character() {
                           killed him. Morgan and his mates are now cursed to
                           sail the seas forever for treasure and revenge.
                         </p>
+                        <p>Starting Items: 15 gold, 1 pistol, 1 cutlass</p>
                         <Button
                           className="mt-auto"
                           onClick={() => {
