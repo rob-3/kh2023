@@ -12,8 +12,11 @@ import {
   WindowHeader,
 } from "react95";
 import Image from "next/image";
-import { useLocalStorage } from "usehooks-ts";
+import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 import useInventory from "~/hooks/useInventory";
+import trpc from "~/pages/api/trpc/[trpc]";
+import { api } from "~/utils/api";
+import useSavedCharacter from "~/hooks/useSavedCharacter";
 
 const character = {
   "1": {
@@ -56,38 +59,56 @@ export default function Character() {
   const [selected, setSelected] = useState<"1" | "2" | "3">("2");
 
   const [inventory, setInventory] = useInventory();
-  const [savedCharacter, saveCharacter] = useLocalStorage<{
-    name: string;
-    story: string;
-    image: string;
-    items: Record<string, number>;
-  } | null>("adventure-character", null);
+  const [savedCharacter, saveCharacter] = useSavedCharacter();
 
-  useEffect(() => {
-    const timeout = Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000;
+  useEffectOnce(() => {
+    const timeout = Math.floor(Math.random() * (1000 - 1000 + 1)) + 1000;
+    const shorterTimeout = Math.floor(Math.random() * (500 - 500 + 1)) + 500;
+
+    setTimeout(() => {
+      if (savedCharacter) {
+        void router.replace("/chat");
+      }
+    }, shorterTimeout);
 
     setTimeout(() => {
       setIsLoading(false);
     }, timeout);
-  }, [selected]);
+  });
 
-  const handleCharacterSubmit = () => {
-    void router.push("/chat");
-    saveCharacter(character[selected]);
+  const { mutateAsync: mutateGenerateSituation } =
+    api.generate.story.useMutation();
+
+  const handleCharacterSubmit = async () => {
+    setIsLoading(true);
+
+    const situation = await mutateGenerateSituation({
+      story: character[selected].story,
+    }).catch(console.error);
+    if (!situation) {
+      setIsLoading(false);
+      return;
+    }
+    saveCharacter({
+      ...character[selected],
+      situation,
+    });
     setInventory(character[selected].items);
+
+    await router.push("/chat");
   };
+
   return (
     <>
       <Head>
         <title>Select character</title>
+        <link rel="icon" href="/adventure.jpg" />
       </Head>
       <main className="h-screen w-screen">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className={`flex h-full w-full flex-col items-center justify-center p-6 ${
-            isLoading ? "" : "sm:h-auto"
-          }`}
+          className={`flex h-full w-full flex-col items-center justify-center p-6`}
         >
           {isLoading ? (
             <div className="m-auto">
@@ -96,7 +117,7 @@ export default function Character() {
           ) : (
             <Window
               className={
-                "h-full w-full max-w-4xl !bg-zinc-900/70 backdrop-blur-md"
+                "h-full max-h-[39rem] w-full max-w-4xl !bg-zinc-900/70 backdrop-blur-md"
               }
             >
               <WindowHeader className={"flex justify-between"}>
@@ -109,7 +130,7 @@ export default function Character() {
                   X
                 </Button>
               </WindowHeader>
-              <WindowContent className="flex h-full flex-col justify-between gap-2 !px-0 !pb-8 sm:!pb-0">
+              <WindowContent className="flex h-full flex-col justify-between gap-2 !px-0 !pb-8">
                 <div className="flex flex-col items-center !overflow-y-auto px-2 sm:flex-row sm:justify-evenly ">
                   <GroupBox
                     label="Captain Lirael Stormblade"
@@ -122,6 +143,7 @@ export default function Character() {
                           width={200}
                           height={200}
                           alt="character"
+                          draggable={false}
                         />
                         <p className="p-2 text-center">
                           Lirael Stormblade, born in Stormhaven, embraced
@@ -160,6 +182,7 @@ export default function Character() {
                           width={200}
                           height={200}
                           alt="character"
+                          draggable={false}
                         />
                         <p className="p-2 text-center">
                           A 31-year-old deckhand, endured relentless bullying
@@ -198,6 +221,7 @@ export default function Character() {
                           width={200}
                           height={200}
                           alt="character"
+                          draggable={false}
                         />
                         <p className="p-1 text-center">
                           Once a poor sailor for the navy is killed by pirates

@@ -10,12 +10,12 @@ const openai = new OpenAI({
 export const runtime = "edge";
 
 const initialPrompt =
-  "The following is a conversation of characters from the 1600s. Characters can trade and do other activities that " +
-  "modify their inventory. They can deny trades if the gold offered is not enough. Each character must provide a response" +
-  "and a character name with every interaction. Use JSON format" +
-  "(gold is a placeholder but can be any item name with quantity and other items can be specified. The trade object is" +
-  "only specified if a trade is finalized and both parties agree), " +
-  'sample as follows: { "text": "", characterName: "", "trade": {"Gold": -20, "Treasure Map": 1} }';
+  "The following is a conversation of characters from the 1600s. They should speak in first person without narration. " +
+  "Characters can trade and do other activities that modify their inventory. They can deny trades if the gold offered is not enough. " +
+  "Each character must provide a text response. characterName is always required. Use this JSON format " +
+  "(The trade object is an example, any other item can be traded. The trade object is only specified if a trade is " +
+  "finalized and both parties agree. text should always be a response string), " +
+  'example as follows: { "text": "This is my offer", "characterName": "Thomas", "trade": {"gold": -20, "treasure map": 1} }. Conversation starts:';
 
 export default async function handler(req: NextRequest) {
   const { messages } = (await req.json()) as {
@@ -31,9 +31,7 @@ export default async function handler(req: NextRequest) {
 
     return {
       ...message,
-      content: JSON.stringify({
-        text: message.content,
-      }),
+      content: message.content,
     };
   });
 

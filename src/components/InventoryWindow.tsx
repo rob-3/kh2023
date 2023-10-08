@@ -1,114 +1,104 @@
-import React from "react";
-import useInventory from "../hooks/useInventory"; // Import the useInventory hook
-import { motion } from "framer-motion";
+import useInventory from "../hooks/useInventory";
+import { AnimatePresence, motion } from "framer-motion";
 import {
+  AppBar,
   Button,
+  Frame,
   ScrollView,
+  TextInput,
+  Toolbar,
+  Tooltip,
   Window,
   WindowContent,
   WindowHeader,
 } from "react95";
-import styled, { keyframes } from "styled-components";
+import { useLocalStorage } from "usehooks-ts";
+import Image from "next/image";
+import { useState } from "react";
 
-type test = {
-  id: number;
-  name: string;
-  description: string;
-  value: number;
-};
-
-const hue = keyframes`
- from {
-   -webkit-filter: hue-rotate(0deg);
- }
- to {
-   -webkit-filter: hue-rotate(-360deg);
- }
-`;
-
-const AnimatedGradientText = styled.h1`
-  margin: 20;
-  color: #f35626;
-  background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -webkit-animation: ${hue} 10s infinite linear;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-feature-settings: "kern";
-  font-size: 90px;
-  font-weight: 700;
-  line-height: 90px;
-  overflow-wrap: break-word;
-  text-align: center;
-  text-rendering: optimizelegibility;
-  -moz-osx-font-smoothing: grayscale;
-`;
-
-function InventoryComponent({ onClose }: { onClose: () => void }) {
-  // Use the useInventory hook to access the inventory data
+export default function InventoryComponent({
+  onClose,
+}: {
+  onClose: () => void;
+}) {
+  const [search, setSearch] = useState("");
   const [inventory] = useInventory();
+
+  const [localItemPics] = useLocalStorage<Record<string, string>>(
+    "item-pics",
+    {},
+  );
 
   return (
     <Window
       className={
-        "h-full w-full max-w-4xl content-center !bg-zinc-900/70 backdrop-blur-md"
+        "h-full w-full max-w-4xl content-center !bg-zinc-900/90 backdrop-blur-md"
       }
     >
       <WindowHeader className={"flex select-none justify-between"}>
-        <span>Inventory</span>
+        <TextInput
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          variant={"flat"}
+          placeholder="Search Inventory..."
+          className={"-ml-2 -mt-1 mr-1"}
+          fullWidth
+        />
         <Button onClick={() => onClose()}>X</Button>
       </WindowHeader>
-
       <WindowContent>
         {Object.entries(inventory).length === 0 ? (
           <div className="flex flex-col items-center justify-center">
             <div className="text-center font-medium">No items :(</div>
           </div>
         ) : (
-          <ScrollView className={"flex flex-wrap gap-4"}>
-            {Object.entries(inventory).map(([name, amount]) => (
-              <div
-                className="flex flex-col items-center justify-center"
-                key={name}
-              >
-                <motion.div
-                  whileHover={{
-                    opacity: 0.5,
-                  }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  {/*<button>*/}
-                  {/*  <Image*/}
-                  {/*    className="m-3"*/}
-                  {/*    src={imageUrl[item.id % 4]}*/}
-                  {/*    alt="Example Image"*/}
-                  {/*    width={50}*/}
-                  {/*    height={50}*/}
-                  {/*  />*/}
-                  {/*</button>*/}
-                </motion.div>
-                <div className="text-center font-medium">
-                  {name} x {amount}
-                </div>
-              </div>
-            ))}
-          </ScrollView>
-        )}
+          <ul className={"flex select-none flex-wrap gap-6"}>
+            {Object.entries(inventory).map(([name, amount]) => {
+              if (search && !name.toLowerCase().includes(search.toLowerCase()))
+                return null;
 
-        {/*{show === true && (*/}
-        {/*  <div>*/}
-        {/*    <AnimatedGradientText className="text-20xl m-10">*/}
-        {/*      {currDescription.name.toUpperCase()}*/}
-        {/*    </AnimatedGradientText>*/}
-        {/*    <div className="m-4 flex flex-col items-center justify-center text-7xl">*/}
-        {/*      ${currDescription.value}*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-        {/*)}*/}
+              return (
+                <motion.li
+                  layout
+                  key={name}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                >
+                  <Frame
+                    key={name}
+                    variant="inside"
+                    shadow
+                    className="relative flex w-24 flex-col items-center justify-center p-2"
+                  >
+                    <Image
+                      className="m-3"
+                      src={localItemPics[name] ?? "/help_sheet.png"}
+                      alt="Example Image"
+                      width={50}
+                      height={50}
+                      draggable={false}
+                    />
+                    <Tooltip
+                      text={name}
+                      enterDelay={100}
+                      leaveDelay={200}
+                      className={"text-black"}
+                    >
+                      <div className="w-[4.5rem] truncate text-center font-medium">
+                        {name}
+                      </div>
+                    </Tooltip>
+                    <div className="absolute left-1 top-0 text-center text-sm font-medium">
+                      x{amount}
+                    </div>
+                  </Frame>
+                </motion.li>
+              );
+            })}
+          </ul>
+        )}
       </WindowContent>
     </Window>
   );
 }
-
-export default InventoryComponent;

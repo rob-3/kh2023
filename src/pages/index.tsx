@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <Head>
         <title>Start your adventure</title>
-        <link rel="icon" href="/LegendsoftheSkywardPirates.jpg" />
+        <link rel="icon" href="/adventure.jpg" />
       </Head>
       <main className="h-screen w-screen">
         <motion.div
@@ -19,43 +19,45 @@ export default function Home() {
           animate={{ opacity: 1 }}
           className="flex h-full w-full flex-col p-6"
         >
-          <div className="mt-20">
+          <div className="mt-16 flex gap-8">
             <Tooltip text="Customization" enterDelay={100} leaveDelay={200}>
               <button onClick={() => undefined}>
                 <Image
-                  className="m-2"
                   src="/ComputerIcon.png"
                   alt="Example Image"
                   width={100}
                   height={100}
+                  draggable={false}
                 />
               </button>
             </Tooltip>
 
-            <Tooltip text="Top Secret" enterDelay={100} leaveDelay={200}>
+            <Tooltip text="adventure.exe" enterDelay={100} leaveDelay={200}>
               <button onClick={() => void router.push("/character")}>
                 <Image
-                  className="m-2"
-                  src="/LegendsoftheSkywardPirates.jpg"
+                  src="/adventure.jpg"
                   alt="LegendsoftheSkywardPirates game"
                   width={100}
                   height={100}
+                  draggable={false}
                 />
               </button>
             </Tooltip>
-            <div className="absolute bottom-10  left-10">
-              <Tooltip text="Recycle‍" enterDelay={100} leaveDelay={200}>
-                <button onClick={() => undefined}>
-                  <Image
-                    className="m-2"
-                    src="/RecycleIcon.png"
-                    alt="Example Image"
-                    width={100}
-                    height={100}
-                  />
-                </button>
-              </Tooltip>
-            </div>
+          </div>
+
+          <div className="absolute bottom-10  left-10">
+            <Tooltip text="Recycle‍" enterDelay={100} leaveDelay={200}>
+              <button onClick={() => undefined}>
+                <Image
+                  className="m-2"
+                  src="/RecycleIcon.png"
+                  alt="Example Image"
+                  width={100}
+                  height={100}
+                  draggable={false}
+                />
+              </button>
+            </Tooltip>
           </div>
 
           <div className="absolute bottom-10  left-10">
