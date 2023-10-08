@@ -108,7 +108,7 @@ export default function Chat() {
   const [inventory, setInventory] = useInventory();
   const [localMessages, setLocalMessages] = useLocalStorage<Message[]>(
     "adventure-messages",
-    [],
+    []
   );
   const [localCharacterPics, setLocalCharacterPics] = useLocalStorage<
     Record<string, string>
@@ -168,7 +168,7 @@ export default function Chat() {
         interval.current = null;
       }, 300);
       const { trade: newInventory, characterName } = parseMessage(
-        message.content,
+        message.content
       );
       if (characterName && !localCharacterPics[characterName]) {
         void fetch("/api/dalle", {
@@ -240,6 +240,15 @@ export default function Chat() {
     }));
     setPendingTrade(null);
   };
+
+  const [savedCharacter] = useLocalStorage<{
+    name: string;
+    story: string;
+    image: string;
+    items: Record<string, number>;
+  } | null>("adventure-character", null);
+
+  const characterImg = savedCharacter!.image;
 
   return (
     <>
@@ -317,7 +326,12 @@ export default function Chat() {
                     >
                       <div className={"h-8 w-8 text-center sm:h-12 sm:w-12"}>
                         {role === "user" ? (
-                          "You"
+                          <Image
+                            src={characterImg}
+                            width={48}
+                            height={48}
+                            alt={"Character image"}
+                          />
                         ) : localCharacterPics[
                             parseMessage(content).characterName!
                           ] ? (
