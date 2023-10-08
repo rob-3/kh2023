@@ -6,10 +6,11 @@ import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
+
   return (
     <>
       <Head>
-        <title>Start your Adventure</title>
+        <title>Start your adventure</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="h-screen w-screen">
