@@ -1,4 +1,4 @@
-<img style="display: inline-block; width: 20px; height: 20px;" src="./public/adventure.jpg"> <h1>Pixel Plunderers</h1>
+<h1><img style="display: inline-block; width: 20px; height: 20px;" src="./public/adventure.jpg"> Pixel Plunderers</h1>
 
 A text-based retro Pirate RPG empowered with ChatGPT, DALLE2, and custom semantic actions.
 
