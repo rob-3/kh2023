@@ -59,8 +59,10 @@ function InventoryComponent() {
   const [inventory] = useInventory();
 
   const [currDescription, setCurrDescription] = useState({name:"",value:0});
+  const [show, setShow] = useState(false)
 
   function changeDescription(name, value) {
+    setShow(true)
     setCurrDescription({name:name,value:value})
   }
 
@@ -123,8 +125,14 @@ function InventoryComponent() {
               </div>
             ))}
             </ScrollView>
-            <AnimatedGradientText className="m-10 text-20xl">{currDescription.name.toUpperCase()}</AnimatedGradientText>          
-            <div className="flex flex-col items-center justify-center m-4 text-7xl">${currDescription.value}</div>
+
+            {show===true &&
+            <div>
+             <AnimatedGradientText className="m-10 text-20xl">{currDescription.name.toUpperCase()}</AnimatedGradientText>          
+             <div className="flex flex-col items-center justify-center m-4 text-7xl">${currDescription.value}</div>
+             </div>
+             }
+           
           </WindowContent>
        
       </Window>
