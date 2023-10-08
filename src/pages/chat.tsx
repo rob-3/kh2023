@@ -82,6 +82,7 @@ export default function Chat() {
 
     for (const [key, value] of Object.entries(pendingTrade)) {
       // Keep sign and show amount with name
+      makeNewItemImage(key);
       const label = `${value < 0 ? "-" : "+"} ${Math.abs(value)} ${key}`;
       console.log(value);
       if (value < 0) {
@@ -108,6 +109,32 @@ export default function Chat() {
   const [localCharacterPics, setLocalCharacterPics] = useLocalStorage<
     Record<string, string>
   >("character-pics", {});
+  const [localItemPics, setLocalItemPics] = useLocalStorage<
+    Record<string, string>
+  >("item-pics", {});
+
+  const makeNewItemImage = (name: string) => {
+    if (!localItemPics[name]) {
+      fetch("/api/dalle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: `A fantasy item oil painting of ${name}`,
+        }),
+      })
+        .then((res) => res.json())
+        .then(({ imageURL }) => {
+          setLocalItemPics((prev) => {
+            return {
+              ...prev,
+              [name]: imageURL,
+            };
+          });
+        });
+    }
+  };
 
   const {
     messages,
@@ -166,6 +193,7 @@ export default function Chat() {
   const handleAcceptTrade = () => {
     const newInventory = pendingTrade ?? {};
     for (const [key, value] of Object.entries(newInventory)) {
+      makeNewItemImage(key);
       if (inventory[key]) {
         newInventory[key] += inventory[key] ?? 0;
       } else {
