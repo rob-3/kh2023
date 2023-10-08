@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { api } from "~/utils/api";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Button,
@@ -14,48 +14,66 @@ import {
   WindowHeader,
 } from "react95";
 import Image from "next/image";
+import { useLocalStorage } from "usehooks-ts";
+
+const character = {
+  "1": {
+    name: "Lirael Stormblade",
+    story:
+      "Lirael Stormblade, born in Stormhaven, embraced piracy, seeking adventure and treasure on the high seas. Her legend grew as a fearless, cunning pirate captain.",
+    image: "/Lirael.jpg",
+    items: {
+      gold: 18,
+      pistol: 2,
+    },
+  },
+  "2": {
+    name: "Luffy Leinecker",
+    story:
+      'A 25-year-old deckhand, endured relentless bullying aboard the "Scarlet Serpent," seeking escape through friendship, a hidden treasure map, will he find the one piece?',
+    image: "/Leinecker.png",
+    items: {
+      gold: 25,
+      pistol: 1,
+      parrot: 1,
+    },
+  },
+  "3": {
+    name: "Morgan",
+    story:
+      "Once a poor sailor for the navy is killed by pirates but is now undead, seeking revenge on the pirates that killed him. Morgan and his mates are now cursed to sail the seas forever for treasure and revenge.",
+    image: "/Morgan.jpg",
+    items: {
+      gold: 15,
+      pistol: 1,
+      cutlass: 1,
+    },
+  },
+};
 
 export default function Character() {
   const router = useRouter();
-  const { data, isLoading } = api.example.hello.useQuery({ text: "from tRPC" });
-  const [selected, setSelected] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selected, setSelected] = useState<"1" | "2" | "3">("2");
 
-  const character = {
-    [1]: {
-      name: "Lirael Stormblade",
-      story:
-        "Lirael Stormblade, born in Stormhaven, embraced piracy, seeking adventure and treasure on the high seas. Her legend grew as a fearless, cunning pirate captain.",
-      image: "/Lirael.jpg",
-      items: {
-        gold: 18,
-        pistol: 2,
-      },
-    },
-    [2]: {
-      name: "Liracker",
-      story:
-        ' A 25-year-old deckhand, endured relentless bullying aboard the "Scarlet Serpent," seeking escape through friendship, a hidden treasure map, and a loyal parrot companion.',
-      image: "/Leinecker.png",
-      items: {
-        gold: 25,
-        pistol: 1,
-        parrot: 1,
-      },
-    },
-    [3]: {
-      name: "Morgan",
-      story:
-        "Once a poor sailor for the navy is killed by pirates but is now undead, seeking revenge on the pirates that killed him. Morgan and his mates are now cursed to sail the seas forever for treasure and revenge.",
-      image: "/Morgan.jpg",
-      items: {
-        gold: 15,
-        pistol: 1,
-        cutlass: 1,
-      },
-    },
-  };
+  const [savedCharacter, saveCharacter] = useLocalStorage<{
+    name: string;
+    story: string;
+    image: string;
+    items: Record<string, number>;
+  } | null>("adventure-character", null);
+
+  useEffect(() => {
+    let timeout = Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000;
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, timeout);
+  }, [selected]);
+
   const handleCharacterSubmit = () => {
-    selected;
+    void router.push("/chat");
+    saveCharacter(character[selected]);
   };
   return (
     <>
@@ -71,7 +89,9 @@ export default function Character() {
           className="flex h-full w-full flex-col items-center justify-center p-6 sm:h-auto "
         >
           {isLoading ? (
-            <Hourglass size={48} />
+            <div className="my-auto flex h-full w-full items-center justify-center">
+              <Hourglass size={48} />
+            </div>
           ) : (
             <Window
               className={
@@ -112,7 +132,7 @@ export default function Character() {
                         <Button
                           className="mt-auto"
                           onClick={() => {
-                            setSelected(1);
+                            setSelected("1");
                           }}
                         >
                           <span className="text-black">select</span>
@@ -121,7 +141,7 @@ export default function Character() {
                     </Frame>
                   </GroupBox>
                   <GroupBox
-                    label="Captain Leinecker"
+                    label="Captain Luffy Leinecker"
                     className="w-full sm:h-[30rem]"
                   >
                     <Frame className="h-full w-full p-2">
@@ -135,14 +155,14 @@ export default function Character() {
                         <p className="p-2 text-center">
                           A 25-year-old deckhand, endured relentless bullying
                           aboard the "Scarlet Serpent," seeking escape through
-                          friendship, a hidden treasure map, and a loyal parrot
-                          companion.
+                          friendship, a hidden treasure map, will he find the
+                          one piece?
                         </p>
                         <p>Starting Items: 25 gold, 1 pistol, 1 parrot</p>
                         <Button
                           className="mt-auto"
                           onClick={() => {
-                            setSelected(2);
+                            setSelected("2");
                           }}
                         >
                           <span className="text-black">select</span>
@@ -172,7 +192,7 @@ export default function Character() {
                         <Button
                           className="mt-auto"
                           onClick={() => {
-                            setSelected(3);
+                            setSelected("3");
                           }}
                         >
                           <span className="text-black">select</span>
