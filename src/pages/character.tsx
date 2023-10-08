@@ -56,6 +56,7 @@ export default function Character() {
   };
   const handleCharacterSubmit = () => {
     selected;
+    void router.push("/chat");
   };
   return (
     <>
