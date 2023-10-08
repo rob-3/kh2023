@@ -43,7 +43,7 @@ const character = {
   "3": {
     name: "Morgan",
     story:
-      "Once a poor sailor for the navy is killed by pirates but is now undead, seeking revenge on the pirates that killed him. Morgan and his mates are now cursed to sail the seas forever for treasure and revenge.",
+      "Once a poor sailor for the navy, he was killed by pirates but is now undead, seeking revenge on the pirates that killed him. Morgan and his mates are now cursed to sail the seas forever for treasure and revenge.",
     image: "/Morgan.jpg",
     items: {
       gold: 15,
@@ -224,7 +224,7 @@ export default function Character() {
                           draggable={false}
                         />
                         <p className="p-1 text-center">
-                          Once a poor sailor for the navy is killed by pirates
+                          Once a poor sailor for the navy, he was killed by pirates
                           but is now undead, seeking revenge on the pirates that
                           killed him. Morgan and his mates are now cursed to
                           sail the seas forever for treasure and revenge.

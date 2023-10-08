@@ -26,7 +26,7 @@ const robInitialPrompt =
   "Always respond in this JSON schema { \"text\": \"<response>\", \"characterName\": \"\" }.\n" +
   "The characterName is always required and is the name of the speaking or acting non-player character (NPC)\n" +
   "The narrator will respond to the character's actions and will provide the character with information about the world.\n" +
-  "Respond to dialog (indicated by quotes) with your own quoted dialog.\n" +
+  "Respond to dialog (indicated by quotes) with your own single-quoted dialog. Single quotes are important.\n" +
   "The trade object is ONLY needed if a trade is finalized and both parties agree."
 ;
 
