@@ -18,17 +18,23 @@ const initialPrompt =
   'sample as follows: { "text": "", characterName: "", "trade": {"Gold": -20, "Treasure Map": 1} }';
 
 export default async function handler(req: NextRequest) {
-  let { messages } = (await req.json()) as {
+  const { messages } = (await req.json()) as {
     messages: OpenAI.Chat.ChatCompletionMessageParam[];
   };
-  messages = messages.map((message, idx) => {
+  const newMessages = messages.slice(1).map((message, idx) => {
     if (idx === 0) {
       return {
         ...message,
         content: initialPrompt + ". " + message.content,
       };
     }
-    return message;
+
+    return {
+      ...message,
+      content: JSON.stringify({
+        text: message.content,
+      }),
+    };
   });
 
   const response = await openai.chat.completions.create({
@@ -37,7 +43,7 @@ export default async function handler(req: NextRequest) {
     temperature: 0.9,
     frequency_penalty: 1.0,
     presence_penalty: 0.5,
-    messages,
+    messages: newMessages,
   });
   const stream = OpenAIStream(response);
   return new StreamingTextResponse(stream);

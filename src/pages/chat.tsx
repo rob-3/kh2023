@@ -35,12 +35,15 @@ type ParsedMessage = {
 const INITIAL_PROMPT = "";
 
 const parseMessage = (content: string): ParsedMessage => {
+  const re = /{.*}/gs;
+  const contentToParse = content.match(re)?.[0] ?? content;
+  console.log(content.match(re));
   // If parsing fail return the message as is
   try {
-    return JSON.parse(content) as ParsedMessage;
+    return JSON.parse(contentToParse) as ParsedMessage;
   } catch {
     // Partially parse in case it is streaming
-    const trimmed = content.trim();
+    const trimmed = contentToParse.trim();
     const colonIndex = trimmed.indexOf(":");
     if (colonIndex !== -1) {
       let text = trimmed
@@ -57,7 +60,7 @@ const parseMessage = (content: string): ParsedMessage => {
     }
 
     return {
-      text: content,
+      text: contentToParse,
     };
   }
 };
@@ -66,6 +69,41 @@ export default function Chat() {
   const router = useRouter();
 
   const [isInventoryOpen, setIsInventoryOpen] = useState(false);
+
+  const [inventory, setInventory] = useInventory();
+  const [localMessages, setLocalMessages] = useLocalStorage<Message[]>(
+    "adventure-messages",
+    [],
+  );
+  const [localCharacterPics, setLocalCharacterPics] = useLocalStorage<
+    Record<string, string>
+  >("character-pics", {});
+  const [localItemPics, setLocalItemPics] = useLocalStorage<
+    Record<string, string>
+  >("item-pics", {});
+
+  const makeNewItemImage = (name: string) => {
+    if (!localItemPics[name]) {
+      void fetch("/api/dalle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: `A fantasy item oil painting of ${name}`,
+        }),
+      })
+        .then((res) => res.json())
+        .then(({ imageURL }) => {
+          setLocalItemPics((prev) => {
+            return {
+              ...prev,
+              [name]: imageURL,
+            };
+          });
+        });
+    }
+  };
 
   const [pendingTrade, setPendingTrade] = useState<Record<
     string,
@@ -91,7 +129,6 @@ export default function Chat() {
       // Keep sign and show amount with name
       makeNewItemImage(key);
       const label = `${value < 0 ? "-" : "+"} ${Math.abs(value)} ${key}`;
-      console.log(value);
       if (value < 0) {
         leaf[0]?.items?.push({
           id: key,
@@ -108,40 +145,7 @@ export default function Chat() {
     return leaf;
   }, [pendingTrade]);
 
-  const [inventory, setInventory] = useInventory();
-  const [localMessages, setLocalMessages] = useLocalStorage<Message[]>(
-    "adventure-messages",
-    []
-  );
-  const [localCharacterPics, setLocalCharacterPics] = useLocalStorage<
-    Record<string, string>
-  >("character-pics", {});
-  const [localItemPics, setLocalItemPics] = useLocalStorage<
-    Record<string, string>
-  >("item-pics", {});
-
-  const makeNewItemImage = (name: string) => {
-    if (!localItemPics[name]) {
-      fetch("/api/dalle", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt: `A fantasy item oil painting of ${name}`,
-        }),
-      })
-        .then((res) => res.json())
-        .then(({ imageURL }) => {
-          setLocalItemPics((prev) => {
-            return {
-              ...prev,
-              [name]: imageURL,
-            };
-          });
-        });
-    }
-  };
+  // useEffect(() => {}, []);
 
   const interval = useRef<NodeJS.Timeout | null>(null);
 
@@ -171,7 +175,7 @@ export default function Chat() {
         interval.current = null;
       }, 300);
       const { trade: newInventory, characterName } = parseMessage(
-        message.content
+        message.content,
       );
       if (characterName && !localCharacterPics[characterName]) {
         void fetch("/api/dalle", {
@@ -186,8 +190,6 @@ export default function Chat() {
           .then((res) => res.json())
           .then(({ imageURL }) => {
             setLocalCharacterPics((prev) => {
-              console.log(characterName);
-              console.log(imageURL);
               return {
                 ...prev,
                 [characterName]: imageURL as string,
@@ -195,7 +197,6 @@ export default function Chat() {
             });
           });
       }
-      console.log(message);
       if (newInventory) {
         setPendingTrade(newInventory);
       }
@@ -253,18 +254,22 @@ export default function Chat() {
 
   const characterImg = savedCharacter?.image ?? "";
   useEffectOnce(() => {
-    setMessages([
-      {
-        id: crypto.randomUUID(),
-        role: "system",
-        content: savedCharacter!.story,
-      },
-      {
-        id: crypto.randomUUID(),
-        role: "system",
-        content: INITIAL_PROMPT,
-      },
-    ]);
+    if (localMessages.length > 0) {
+      setMessages(localMessages);
+    } else {
+      setMessages([
+        {
+          id: crypto.randomUUID(),
+          role: "system",
+          content: savedCharacter!.story,
+        },
+        {
+          id: crypto.randomUUID(),
+          role: "system",
+          content: INITIAL_PROMPT,
+        },
+      ]);
+    }
   });
 
   return (
@@ -308,7 +313,18 @@ export default function Chat() {
               <Button
                 variant="menu"
                 onClick={() => {
-                  setMessages([]);
+                  setMessages([
+                    {
+                      id: crypto.randomUUID(),
+                      role: "system",
+                      content: savedCharacter!.story,
+                    },
+                    {
+                      id: crypto.randomUUID(),
+                      role: "system",
+                      content: INITIAL_PROMPT,
+                    },
+                  ]);
                 }}
               >
                 Start Anew

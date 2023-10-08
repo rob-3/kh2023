@@ -13,6 +13,7 @@ import {
 } from "react95";
 import Image from "next/image";
 import { useLocalStorage } from "usehooks-ts";
+import useInventory from "~/hooks/useInventory";
 
 const character = {
   "1": {
@@ -54,6 +55,7 @@ export default function Character() {
   const [isLoading, setIsLoading] = useState(true);
   const [selected, setSelected] = useState<"1" | "2" | "3">("2");
 
+  const [inventory, setInventory] = useInventory();
   const [savedCharacter, saveCharacter] = useLocalStorage<{
     name: string;
     story: string;
@@ -72,6 +74,7 @@ export default function Character() {
   const handleCharacterSubmit = () => {
     void router.push("/chat");
     saveCharacter(character[selected]);
+    setInventory(character[selected].items);
   };
   return (
     <>
