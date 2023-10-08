@@ -4,5 +4,6 @@ A text-based retro Pirate RPG empowered with ChatGPT, DALLE2, and custom semanti
 
 ![Gameplay example 1](./public/gameplay.png)
 ![Gameplay example 2](./public/characterselect.png)
+![Gameplay example 3](./public/inventory.png)
 
 Made with ❤️  by Robert Boyd III, Raciel Antela Pardo, Victor Huang, Isabella Faile
