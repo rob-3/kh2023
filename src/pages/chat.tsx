@@ -276,7 +276,7 @@ export default function Chat() {
     <>
       <Head>
         <title>Adventure</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favLegendsoftheSkywardPirates.jpp" />
       </Head>
       <main className="h-screen w-screen">
         <motion.div
