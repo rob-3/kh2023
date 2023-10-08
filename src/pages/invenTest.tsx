@@ -16,6 +16,7 @@ import {
   Window,
 
 } from "react95";
+import styled, { keyframes } from 'styled-components';
 
 type test = {
   id:number;
@@ -24,14 +25,43 @@ type test = {
   value:number;
 }
 
+const hue = keyframes`
+ from {
+   -webkit-filter: hue-rotate(0deg);
+ }
+ to {
+   -webkit-filter: hue-rotate(-360deg);
+ }
+`;
+
+const AnimatedGradientText = styled.h1`
+  margin:20;
+  color: #f35626;
+  background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: ${hue} 10s infinite linear;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-feature-settings: "kern";
+  font-size: 90px;
+  font-weight: 700;
+  line-height: 90px;
+  overflow-wrap: break-word;
+  text-align: center;
+  text-rendering: optimizelegibility;
+  -moz-osx-font-smoothing: grayscale;
+`;
+
+
 function InventoryComponent() {
   // Use the useInventory hook to access the inventory data
   const [inventory] = useInventory();
 
-  const [currDescription, setCurrDescription] = useState({name:"",description:""});
+  const [currDescription, setCurrDescription] = useState({name:"",value:0});
 
-  function changeDescription(name, descrip) {
-    setCurrDescription({name:name,description:descrip})
+  function changeDescription(name, value) {
+    setCurrDescription({name:name,value:value})
   }
 
   //fake stuff
@@ -79,7 +109,7 @@ function InventoryComponent() {
                   <button>
                   <img
                     className="m-3"
-                    onClick={() => changeDescription(item.name,item.description)}
+                    onClick={() => changeDescription(item.name,item.value)}
                     src={imageUrl[item.id % 4]}
                     alt="Example Image"
                     width={50}
@@ -93,9 +123,8 @@ function InventoryComponent() {
               </div>
             ))}
             </ScrollView>
-            <div className="flex flex-col items-center justify-center m-4 text-7xl">{currDescription.name.toUpperCase()}</div>
-          
-            <div className="flex flex-col items-center justify-center m-4 outline outline-black h-50">{currDescription.description}</div>
+            <AnimatedGradientText className="m-10 text-20xl">{currDescription.name.toUpperCase()}</AnimatedGradientText>          
+            <div className="flex flex-col items-center justify-center m-4 text-7xl">${currDescription.value}</div>
           </WindowContent>
        
       </Window>
