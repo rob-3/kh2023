@@ -103,8 +103,11 @@ export default function Chat() {
   const [inventory, setInventory] = useInventory();
   const [localMessages, setLocalMessages] = useLocalStorage<Message[]>(
     "adventure-messages",
-    [],
+    []
   );
+  const [localCharacterPics, setLocalCharacterPics] = useLocalStorage<
+    Record<string, string>
+  >("character-pics", {});
 
   const {
     messages,
@@ -116,7 +119,31 @@ export default function Chat() {
   } = useChat({
     api: "/api/chat",
     onFinish: (message) => {
-      const { trade: newInventory } = parseMessage(message.content);
+      const { trade: newInventory, characterName } = parseMessage(
+        message.content
+      );
+      if (characterName) {
+        fetch("/api/dalle", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt: `A fantasy character profile oil painting of ${characterName}`,
+          }),
+        })
+          .then((res) => res.json())
+          .then(({ imageURL }) => {
+            setLocalCharacterPics((prev) => {
+              console.log(characterName);
+              console.log(imageURL);
+              return {
+                ...prev,
+                [characterName]: imageURL,
+              };
+            });
+          });
+      }
       console.log(message);
       if (newInventory) {
         setPendingTrade(newInventory);
@@ -210,7 +237,22 @@ export default function Chat() {
                       }
                     >
                       <div className={"h-8 w-8 text-center sm:h-12 sm:w-12"}>
-                        {role === "user" ? "👨‍💻" : "🤖"}
+                        {role === "user" ? (
+                          "👨‍💻"
+                        ) : localCharacterPics[
+                            parseMessage(content).characterName!
+                          ] ? (
+                          <img
+                            src={
+                              localCharacterPics[
+                                parseMessage(content).characterName!
+                              ]
+                            }
+                            className="w-[32px] h-[32px]"
+                          />
+                        ) : (
+                          "🤖"
+                        )}
                       </div>
                     </Tooltip>
                     <Frame
