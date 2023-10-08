@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <Head>
         <title>Start your adventure</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/LegendsoftheSkywardPirates.jpg" />
       </Head>
       <main className="h-screen w-screen">
         <motion.div
@@ -32,23 +32,12 @@ export default function Home() {
               </button>
             </Tooltip>
 
-            <Tooltip text="Secret" enterDelay={100} leaveDelay={200}>
-              <button onClick={() => void router.push("/chat")}>
-                <Image
-                  className="m-2"
-                  src="/FolderIcon.png"
-                  alt="Example Image"
-                  width={100}
-                  height={100}
-                />
-              </button>
-            </Tooltip>
             <Tooltip text="Top Secret" enterDelay={100} leaveDelay={200}>
               <button onClick={() => void router.push("/character")}>
                 <Image
                   className="m-2"
-                  src="/FolderIcon.png"
-                  alt="Example Image"
+                  src="/LegendsoftheSkywardPirates.jpg"
+                  alt="LegendsoftheSkywardPirates game"
                   width={100}
                   height={100}
                 />
