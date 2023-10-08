@@ -14,7 +14,7 @@ import {
   WindowContent,
   WindowHeader,
 } from "react95";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useChat } from "ai/react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -22,6 +22,8 @@ import { type Message } from "ai";
 import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 import useInventory from "~/hooks/useInventory";
 import { MdInventory2 } from "react-icons/md";
+import InventoryWindow from "~/components/InventoryWindow";
+import Image from "next/image";
 
 type ParsedMessage = {
   text: string;
@@ -59,6 +61,8 @@ const parseMessage = (content: string): ParsedMessage => {
 
 export default function Chat() {
   const router = useRouter();
+
+  const [isInventoryOpen, setIsInventoryOpen] = useState(false);
 
   const [pendingTrade, setPendingTrade] = useState<Record<
     string,
@@ -104,7 +108,7 @@ export default function Chat() {
   const [inventory, setInventory] = useInventory();
   const [localMessages, setLocalMessages] = useLocalStorage<Message[]>(
     "adventure-messages",
-    []
+    [],
   );
   const [localCharacterPics, setLocalCharacterPics] = useLocalStorage<
     Record<string, string>
@@ -138,6 +142,17 @@ export default function Chat() {
 
   const interval = useRef<NodeJS.Timeout | null>(null);
 
+  const isTradePossible = useMemo(() => {
+    if (!pendingTrade) return false;
+    for (const [name, value] of Object.entries(pendingTrade)) {
+      const inventoryValue = inventory[name] ?? 0;
+      if (value < 0 && inventoryValue - value < 0) {
+        return false;
+      }
+    }
+    return true;
+  }, [inventory, pendingTrade]);
+
   const {
     messages,
     handleSubmit: _handleSubmit,
@@ -153,10 +168,10 @@ export default function Chat() {
         interval.current = null;
       }, 300);
       const { trade: newInventory, characterName } = parseMessage(
-        message.content
+        message.content,
       );
       if (characterName && !localCharacterPics[characterName]) {
-        fetch("/api/dalle", {
+        void fetch("/api/dalle", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -172,7 +187,7 @@ export default function Chat() {
               console.log(imageURL);
               return {
                 ...prev,
-                [characterName]: imageURL,
+                [characterName]: imageURL as string,
               };
             });
           });
@@ -238,6 +253,21 @@ export default function Chat() {
           animate={{ opacity: 1, scale: 1 }}
           className="flex h-full w-full flex-col items-center justify-center p-6"
         >
+          <AnimatePresence>
+            {isInventoryOpen && (
+              <motion.div
+                initial={{ right: "-100%" }}
+                animate={{ right: 0 }}
+                exit={{ right: "-100%" }}
+                transition={{ type: "tween", duration: 0.4 }}
+                className={
+                  "absolute right-0 top-0 z-50 h-full w-full max-w-sm pb-4 pt-4"
+                }
+              >
+                <InventoryWindow onClose={() => setIsInventoryOpen(false)} />
+              </motion.div>
+            )}
+          </AnimatePresence>
           <Window
             className={
               "flex h-full w-full max-w-4xl flex-col !bg-zinc-900/70 backdrop-blur-md"
@@ -259,7 +289,10 @@ export default function Chat() {
               </Button>
               <Handle size={32} />
               <Handle size={32} className={"ml-auto"} />
-              <Button variant="menu">
+              <Button
+                variant="menu"
+                onClick={() => setIsInventoryOpen(!isInventoryOpen)}
+              >
                 Inventory <MdInventory2 className={"ml-1"} />
               </Button>
               <Handle size={32} />
@@ -284,20 +317,22 @@ export default function Chat() {
                     >
                       <div className={"h-8 w-8 text-center sm:h-12 sm:w-12"}>
                         {role === "user" ? (
-                          "👨‍💻"
+                          "You"
                         ) : localCharacterPics[
                             parseMessage(content).characterName!
                           ] ? (
-                          <img
+                          <Image
                             src={
                               localCharacterPics[
                                 parseMessage(content).characterName!
-                              ]
+                              ]!
                             }
-                            className="w-[32px] h-[32px]"
+                            width={48}
+                            height={48}
+                            alt={"Character image"}
                           />
                         ) : (
-                          "🤖"
+                          "?"
                         )}
                       </div>
                     </Tooltip>
@@ -331,7 +366,12 @@ export default function Chat() {
                     <Button onClick={handleRejectTrade}>
                       This offer sucks
                     </Button>
-                    <Button onClick={handleAcceptTrade}>Accept</Button>
+                    <Button
+                      disabled={!isTradePossible}
+                      onClick={handleAcceptTrade}
+                    >
+                      Accept
+                    </Button>
                   </div>
                 </div>
               )}

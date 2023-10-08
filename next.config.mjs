@@ -17,6 +17,10 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  // Images nextjs
+    images: {
+        domains: ['oaidalleapiprodscus.blob.core.windows.net'],
+    }
 };
 
 export default config;
