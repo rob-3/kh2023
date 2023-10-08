@@ -225,12 +225,18 @@ export default function Chat() {
         {
           id: crypto.randomUUID(),
           role: "system",
-          content: localSavedCharacter.story,
+          content: JSON.stringify({
+            text: localSavedCharacter.story,
+            characterName: "narrator",
+          }),
         },
         {
           id: crypto.randomUUID(),
           role: "system",
-          content: localSavedCharacter.situation,
+          content: JSON.stringify({
+            text: localSavedCharacter.situation,
+            characterName: "narrator",
+          }),
         },
       ]);
     }
@@ -357,6 +363,7 @@ export default function Chat() {
                 className="flex flex-col gap-4 overflow-y-auto px-4"
               >
                 {messages.map(({ content, id, role }, i) => {
+                  console.log(content);
                   const { text, characterName } = parseMessage(content);
                   return (
                     <li
@@ -376,7 +383,16 @@ export default function Chat() {
                           className={"text-black"}
                         >
                           <div className={"flex h-10 w-10 sm:h-14 sm:w-14"}>
-                            {isLoadingCharacterPic &&
+                            {characterName === "narrator" ? 
+                              <Image
+                                src={ "/help_question_mark.png" }
+                                width={64}
+                                height={64}
+                                alt={"Character image"}
+                                className={"object-cover"}
+                                draggable={false}
+                              />
+                            : isLoadingCharacterPic &&
                             role !== "user" &&
                             !localCharacterPics[characterName ?? ""] ? (
                               <Hourglass size={48} />
