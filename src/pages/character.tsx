@@ -109,9 +109,9 @@ export default function Character() {
                 </Button>
               </WindowHeader>
               <WindowContent className="flex h-full flex-col justify-between gap-2 !px-0 !pb-8 sm:!pb-0">
-                <div className="flex flex-col items-center !overflow-y-auto px-2 sm:flex-row sm:justify-evenly">
+                <div className="flex flex-col items-center !overflow-y-auto px-2 sm:flex-row sm:justify-evenly ">
                   <GroupBox
-                    label="Captain Lirael Stormblade"
+                    label="Captain Lirael Stormblade "
                     className="w-full sm:h-[30rem]"
                   >
                     <Frame className="h-full w-full p-2">
@@ -134,6 +134,7 @@ export default function Character() {
                           onClick={() => {
                             setSelected("1");
                           }}
+                          variant={selected === "1" ? "flat" : "default"}
                         >
                           <span className="text-black">select</span>
                         </Button>
@@ -153,7 +154,7 @@ export default function Character() {
                           alt="character"
                         />
                         <p className="p-2 text-center">
-                          A 25-year-old deckhand, endured relentless bullying
+                          A 31-year-old deckhand, endured relentless bullying
                           aboard the "Scarlet Serpent," seeking escape through
                           friendship, a hidden treasure map, will he find the
                           one piece?
@@ -164,6 +165,7 @@ export default function Character() {
                           onClick={() => {
                             setSelected("2");
                           }}
+                          variant={selected === "2" ? "flat" : "default"}
                         >
                           <span className="text-black">select</span>
                         </Button>
@@ -194,6 +196,7 @@ export default function Character() {
                           onClick={() => {
                             setSelected("3");
                           }}
+                          variant={selected === "3" ? "flat" : "default"}
                         >
                           <span className="text-black">select</span>
                         </Button>
