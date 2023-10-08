@@ -300,7 +300,7 @@ export default function Chat() {
   return (
     <>
       <Head>
-        <title>Adventure</title>
+        <title>Pixel Plunderers</title>
         <link rel="icon" href="/adventure.jpg" />
       </Head>
       <main className="h-full w-full">
@@ -330,7 +330,7 @@ export default function Chat() {
             }
           >
             <WindowHeader className={"flex select-none justify-between"}>
-              <span>adventure.exe</span>
+              <span>pixel-plunderers.exe</span>
               <Button onClick={() => void router.push("/")}>X</Button>
             </WindowHeader>
             <Toolbar>
