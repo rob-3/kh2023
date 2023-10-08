@@ -122,7 +122,7 @@ export default function Chat() {
       const { trade: newInventory, characterName } = parseMessage(
         message.content
       );
-      if (characterName) {
+      if (characterName && !localCharacterPics[characterName]) {
         fetch("/api/dalle", {
           method: "POST",
           headers: {
