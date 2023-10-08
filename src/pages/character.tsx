@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 import { api } from "~/utils/api";
 import { useState } from "react";
@@ -15,7 +16,9 @@ import {
 import Image from "next/image";
 
 export default function Character() {
+  const router = useRouter();
   const { data, isLoading } = api.example.hello.useQuery({ text: "from tRPC" });
+  const [selected, setSelected] = useState(0);
 
   return (
     <>
@@ -40,68 +43,98 @@ export default function Character() {
             >
               <WindowHeader className={"flex justify-between"}>
                 <span>adventure.exe</span>
-                <Button>X</Button>
+                <Button
+                  onClick={() => {
+                    void router.push("/");
+                  }}
+                >
+                  X
+                </Button>
               </WindowHeader>
               <WindowContent className="flex h-full flex-col justify-between gap-2 !px-0 !pb-8 sm:!pb-0">
                 <div className="flex flex-col items-center !overflow-y-auto px-2 sm:flex-row sm:justify-evenly">
-                  <GroupBox label="Jessica">
-                    <Frame>
-                      <div className="w-25 flex flex-col items-center justify-center">
+                  <GroupBox
+                    label="Captain Lirael Stormblade"
+                    className="w-full sm:h-[30rem]"
+                  >
+                    <Frame className="h-full w-full p-2">
+                      <div className="w-25 flex h-full flex-col items-center justify-center">
                         <Image
-                          src="/chelsea.jpg"
+                          src="/Lirael.jpg"
                           width={200}
                           height={200}
                           alt="character"
                         />
-                        <p className="text-center">
-                          Ava, a middle-class cyberpunk hacker, navigates
-                          dystopian cityscapes with technical prowess and
-                          rebellion in her veins, seeking justice for her
-                          family's corporate exploitation.
+                        <p className="p-2 text-center">
+                          Lirael Stormblade, born in Stormhaven, embraced
+                          piracy, seeking adventure and treasure on the high
+                          seas. Her legend grew as a fearless, cunning pirate
+                          captain.
                         </p>
-                        <Button>
+                        <Button
+                          className="mt-auto"
+                          onClick={() => {
+                            setSelected(1);
+                          }}
+                        >
                           <span className="text-black">select</span>
                         </Button>
                       </div>
                     </Frame>
                   </GroupBox>
-                  <GroupBox label="Jessica">
-                    <Frame>
-                      <div className="w-25 flex flex-col items-center justify-center">
+                  <GroupBox
+                    label="Captain Liracker"
+                    className="w-full sm:h-[30rem]"
+                  >
+                    <Frame className="h-full w-full p-2">
+                      <div className="w-25 flex h-full flex-col items-center justify-center">
                         <Image
-                          src="/chelsea.jpg"
+                          src="/Liracker.jpg"
                           width={200}
                           height={200}
                           alt="character"
                         />
-                        <p className="text-center">
-                          Leon, a wealthy cyberpunk scion, hides deep family
-                          trauma—his parents' ruthless corporate feuds led to a
-                          tragic accident, leaving him with survivor's guilt and
-                          a relentless pursuit of vengeance.
+                        <p className="p-2 text-center">
+                          A 25-year-old deckhand, endured relentless bullying
+                          aboard the "Scarlet Serpent," seeking escape through
+                          friendship, a hidden treasure map, and a loyal parrot
+                          companion.
                         </p>
-                        <Button>
+                        <Button
+                          className="mt-auto"
+                          onClick={() => {
+                            setSelected(1);
+                          }}
+                        >
                           <span className="text-black">select</span>
                         </Button>
                       </div>
                     </Frame>
                   </GroupBox>
-                  <GroupBox label="Jessica">
-                    <Frame>
-                      <div className="w-25 flex flex-col items-center justify-center">
+                  <GroupBox
+                    label="Deck Hand Morgan"
+                    className="w-full sm:h-[30rem]"
+                  >
+                    <Frame className="h-full w-full p-2">
+                      <div className="w-25 flex h-full flex-col items-center justify-center">
                         <Image
-                          src="/chelsea.jpg"
+                          src="/Morgan.jpg"
                           width={200}
                           height={200}
                           alt="character"
                         />
-                        <p className="text-center">
-                          Zara, a fugitive cyberpunk with illicit body mods,
-                          evades authorities for black-market enhancements.
-                          Self-serving by nature, she reluctantly protects a
-                          vulnerable ward, indebted by a past favor.
+                        <p className="p-1 text-center">
+                          Once a poor sailor for the navy is killed by pirates
+                          but is now undead, seeking revenge on the pirates that
+                          killed him. Morgan and his mates are now cursed to
+                          sail the seas forever for treasure and revenge.
                         </p>
-                        <Button>
+                        <Button
+                          className="mt-auto"
+                          onClick={() => {
+                            setSelected(1);
+                          }}
+                        >
                           <span className="text-black">select</span>
                         </Button>
                       </div>

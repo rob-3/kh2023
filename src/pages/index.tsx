@@ -42,7 +42,17 @@ export default function Home() {
                 />
               </button>
             </Tooltip>
-
+            <Tooltip text="Top Secret" enterDelay={100} leaveDelay={200}>
+              <button onClick={() => void router.push("/character")}>
+                <Image
+                  className="m-2"
+                  src="/FolderIcon.png"
+                  alt="Example Image"
+                  width={100}
+                  height={100}
+                />
+              </button>
+            </Tooltip>
             <div className="absolute bottom-10  left-10">
               <Tooltip text="Recycle‍" enterDelay={100} leaveDelay={200}>
                 <button onClick={() => undefined}>
